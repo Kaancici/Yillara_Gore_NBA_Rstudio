@@ -1,0 +1,150 @@
+install.packages("devtools")
+devtools::install_github("hrbrmstr/streamgraph")
+library(devtools)
+library(streamgraph)
+install.packages("ggplot2")
+library(ggplot2)
+install.packages("dplyr")
+library(dplyr)
+install.packages("RColorBrewer")
+library(RColorBrewer)
+install.packages("tidyr")
+library(tidyr)
+install.packages("highcharter")
+library(highcharter)
+install.packages("plotly")
+library(plotly)
+install.packages("vioplot")
+library(vioplot)
+install.packages("leaflet")
+library(leaflet)
+install.packages("leaflet.extras")
+library(leaflet.extras)
+
+#-------------------------------------------------------------------------
+#Oyuncu Maç Sayısı ve Katkı Performansları Karşılaştırması
+
+data_cleaned <- NBAson2 |>
+  filter(!is.na(count) & !is.na(G) & !is.na(PER))
+ggplot(data_cleaned, aes(x = G, y = PER)) +
+  geom_point(alpha = 0.7, size = 2, color = '#4876FF') +  
+  labs(
+    title = 'Oyuncu Maç Sayısı ve Katkı Performansları Karşılaştırması',
+    x = 'Oynanan Maç Sayısı',
+    y = 'Performansları',
+    subtitle = 'Noktaların İlişkisi',
+    caption = 'Veri Kaynağı: NBAson2'
+  ) +  
+  theme_minimal() +  
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 16),  
+    plot.subtitle = element_text(hjust = 0.5, size = 12, color = 'gray'),  
+    plot.caption = element_text(size = 10, color = 'gray'),  
+    axis.text = element_text(size = 10),  
+    legend.position = 'none'  
+  )+
+  theme_bw()
+
+#--------------------------------------------------------------------------
+#Pozisyonlara Göre Yıllık Ortalama Sayı Grafiği
+
+library(shiny)
+library(streamgraph)
+
+ui <- fluidPage(
+  titlePanel("Pozisyonlara Göre Yıllık Ortalama Sayı Grafiği"),  
+  mainPanel(
+    streamgraphOutput("myStreamgraph")
+  )
+)
+
+server <- function(input, output) {
+  
+  data_cleaned <- NBAson2 |> filter(!is.na(count) & !is.na(year) & !is.na(Pos) & !is.na(PER))
+  
+  position_avg_points <- data_cleaned |>
+    group_by(year, Pos) |>
+    summarize(avg_points = mean(as.numeric(PER), na.rm = TRUE))
+  
+  position_avg_points <- position_avg_points[complete.cases(position_avg_points), ]
+  
+  all_years <- expand.grid(year = unique(position_avg_points$year), Pos = unique(position_avg_points$Pos))
+  
+  position_avg_points <- merge(all_years, position_avg_points, by = c("year", "Pos"), all.x = TRUE)
+  
+  output$myStreamgraph <- renderStreamgraph({
+    streamgraph(position_avg_points, key = "Pos", value = "avg_points", date = "year", interpolate = "basis", width = 1000, height = 500)
+  })
+}
+
+shinyApp(ui, server)
+
+
+#-----------------------------------------------------------------------------------
+
+#Oyuncuların Yıllara Göre Ofansif Performansı Karşılaştırması
+
+data <- NBAson2
+mean_data <- data |>
+  group_by(year) |>
+  summarise(mean_OWS = mean(OWS))
+
+ggplot(data, aes(x = OWS, y = factor(year))) +  # Swap x and y axes
+  geom_violin(trim = FALSE, fill = "#FF7256") +
+  geom_boxplot(width = 0.2, fill = "white", color = "black") +
+  geom_point(data = mean_data, aes(x = mean_OWS, y = factor(year)), color = "darkred", size = 3) +
+  labs(title = "Oyuncuların Yıllara Göre Ofansif Performansı Karşılaştırması",
+       x = "Yıllara Göre Ofansif Performansları",
+       y = "Yıl") +
+  theme(axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text.x = element_text(size = 10),
+        axis.text.y = element_text(size = 10)) +
+  theme_bw()
+
+#--------------------------------------------------------------------------------
+#Oyuncuların Yıllara Göre Defansif Performansı Karşılaştırması
+
+data <- NBAson2
+mean_data <- data |>
+  group_by(year) |>
+  summarise(mean_DWS = mean(DWS))
+
+ggplot(data, aes(x = DWS, y = factor(year))) +  # Swap x and y axes
+  geom_violin(trim = FALSE, fill = "#4876FF") +
+  geom_boxplot(width = 0.2, fill = "white", color = "black") +
+  geom_point(data = mean_data, aes(x = mean_DWS, y = factor(year)), color = "darkred", size = 3) +
+  labs(title = "Oyuncuların Yıllara Göre Defansif Performansı Karşılaştırması",
+       x = "Yıllara Göre Defansif Performansları",
+       y = "Yıl") +
+  theme(axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text.x = element_text(size = 10),
+        axis.text.y = element_text(size = 10)) +
+  theme_bw()
+
+
+#-------------------------------------------------------------------------------
+#NBA Atış Analizi 3 ve 2 Sayılık Atış Yüzdelerini Karşılaştırma
+
+colors <- c("#4876FF", "#FF7256")
+
+merged_data <- NBA_2004_2023_Shots %>%
+  filter(SEASON_1 >= 2011) %>%
+  group_by(SEASON_1, SHOT_TYPE) %>%
+  summarise(topat = sum(SHOT_MADE)) %>%
+  spread(SHOT_TYPE, topat, fill = 0)
+
+tidy_data <- reshape2::melt(merged_data, id.vars = "SEASON_1", variable.name = "Shot_Type", value.name = "Shots_Made")
+tidy_data$SEASON_1 <- as.factor(tidy_data$SEASON_1)
+
+ggplot(tidy_data, aes(x = SEASON_1, y = Shots_Made, fill = Shot_Type)) +
+  geom_bar(stat = "identity", position = "fill") +
+  labs(title = "NBA Atış Analizi",
+       x = "Sezon",
+       y = "Toplam Yapılan Atışlar",
+       fill = "Atış Türü") +
+  scale_fill_manual(values = colors, name = "Atış Türü", labels = c("3 Sayılık Atış Yüzdesi", "2 Sayılık Atış Yüzdesi")) +  # Translate legend labels and set colors
+  scale_y_continuous(labels = scales::percent_format(scale = 100)) +
+  theme_bw()
+
