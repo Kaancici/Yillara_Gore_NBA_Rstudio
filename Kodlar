@@ -22,28 +22,61 @@ install.packages("leaflet.extras")
 library(leaflet.extras)
 
 #-------------------------------------------------------------------------
-#Oyuncu Maç Sayısı ve Katkı Performansları Karşılaştırması
+#Performansı etkileyen faktörler
 
-data_cleaned <- NBAson2 |>
-  filter(!is.na(count) & !is.na(G) & !is.na(PER))
-ggplot(data_cleaned, aes(x = G, y = PER)) +
-  geom_point(alpha = 0.7, size = 2, color = '#4876FF') +  
-  labs(
-    title = 'Oyuncu Maç Sayısı ve Katkı Performansları Karşılaştırması',
-    x = 'Oynanan Maç Sayısı',
-    y = 'Performansları',
-    subtitle = 'Noktaların İlişkisi',
-    caption = 'Veri Kaynağı: NBAson2'
-  ) +  
-  theme_minimal() +  
-  theme(
-    plot.title = element_text(hjust = 0.5, size = 16),  
-    plot.subtitle = element_text(hjust = 0.5, size = 12, color = 'gray'),  
-    plot.caption = element_text(size = 10, color = 'gray'),  
-    axis.text = element_text(size = 10),  
-    legend.position = 'none'  
-  )+
+
+library(gridExtra)
+
+
+plot1 <- ggplot(NBAson2, aes(x = G, y = PER)) +
+  geom_point(size = 2, color = '#4876FF', alpha = 0.5) +
+  labs(title = 'Maç Sayısı ve Performans ',
+       x = 'Oynanan Maç Sayısı',
+       y = 'Performans') +
   theme_bw()
+
+
+plot2 <- ggplot(NBAson2, aes(x = TS, y = PER)) +
+  geom_point(size = 2, color = '#FF7256', alpha = 0.5) +
+  labs(title = 'Gerçek Atış (%) ve Performans',
+       x = 'Gerçek Atış (%)',
+       y = 'Performans') +
+  theme_bw()
+
+
+plot3 <- ggplot(NBAson2, aes(x = AST, y = PER)) +
+  geom_point(size = 2, color = '#4876FF', alpha = 0.5) +
+  labs(title = 'Asist (%) ve Performans',
+       x = 'Asist (%)',
+       y = 'Performans') +
+  theme_bw()
+
+
+plot4 <- ggplot(NBAson2, aes(x = BLK, y = PER)) +
+  geom_point(size = 2, color = '#FF7256', alpha = 0.5) +
+  labs(title = 'Bloklama (%) ve Performans',
+       x = 'Bloklama (%)',
+       y = 'Performans') +
+  theme_bw()
+
+
+plot5 <- ggplot(NBAson2, aes(x = MP, y = PER)) +
+  geom_point(size = 2, color = '#4876FF', alpha = 0.5) +
+  labs(title = 'Oyunda Kalma Süresi ve Performans ',
+       x = 'Oyunda Kalma Süresi',
+       y = 'Performans') +
+  theme_bw()
+
+
+plot6 <- ggplot(NBAson2, aes(x = WS, y = PER)) +
+  geom_point(size = 2, color = '#FF7256', alpha = 0.5) +
+  labs(title = 'Kazanma (%) ve Performans ',
+       x = 'Kazanma (%)',
+       y = 'Performans') +
+  theme_bw()
+
+
+grid.arrange(plot1, plot2, plot3, plot4, plot5, plot6, ncol = 3)
 
 #--------------------------------------------------------------------------
 #Pozisyonlara Göre Yıllık Ortalama Sayı Grafiği
