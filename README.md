@@ -242,7 +242,7 @@ ggplot(data, aes(x = DWS, y = factor(year))) +  # Swap x and y axes
   theme_bw()+
   theme(axis.text = element_text(size = 15),
         axis.title = element_text(size = 15))
-
+```
 ![98fd6d84-398f-4699-a49b-b08a7334c608](https://github.com/Kaancici/yillara_gore_nba/assets/150475924/5e01c3af-3c32-4fdc-a69f-f0caa145e459)
 
   Grafikten görülebileceği gibi, NBA'de oyuncuların defansif performansları, yıllara göre ortalamaya yaklaşmıştır. Bu durum, oyuncuların defansif yeteneklerinin arttığını göstermektedir.
