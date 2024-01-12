@@ -157,12 +157,12 @@ Grafikte C oyuncuları, 2011-2015 yılları arasında takımların skor yükün�
 
 ### 3)Yıllara göre 3'lük sayıların yüzdeleri ile 2'lik sayıların yüzdeleri barchart
 ```
-colors <- c("#01408d", "#e9062a")
+colors <- c("#e9062a","#01408d")
 
-merged_data <- NBA_2004_2023_Shots %>%
-  filter(SEASON_1 >= 2011) %>%
-  group_by(SEASON_1, SHOT_TYPE) %>%
-  summarise(topat = sum(SHOT_MADE)) %>%
+merged_data <- NBA_2004_2023_Shots |>
+  filter(SEASON_1 >= 2011) |>
+  group_by(SEASON_1, SHOT_TYPE) |>
+  summarise(topat = sum(SHOT_MADE)) |>
   spread(SHOT_TYPE, topat, fill = 0)
 
 tidy_data <- reshape2::melt(merged_data, id.vars = "SEASON_1", variable.name = "Shot_Type", value.name = "Shots_Made")
@@ -174,7 +174,7 @@ ggplot(tidy_data, aes(x = SEASON_1, y = Shots_Made, fill = Shot_Type)) +
        x = "Sezon",
        y = "Toplam Yapılan Atışlar",
        fill = "Atış Türü") +
-  scale_fill_manual(values = colors, name = "Atış Türü", labels = c("3 Sayılık Atış Yüzdesi", "2 Sayılık Atış Yüzdesi")) +  # Translate legend labels and set colors
+  scale_fill_manual(values = colors, name = "Atış Türü", labels = c("2 Sayılık Atış Yüzdesi","3 Sayılık Atış Yüzdesi")) +  # Translate legend labels and set colors
   scale_y_continuous(labels = scales::percent_format(scale = 100)) +
   theme_minimal() +
   theme(
@@ -187,7 +187,9 @@ ggplot(tidy_data, aes(x = SEASON_1, y = Shots_Made, fill = Shot_Type)) +
   theme(axis.text = element_text(size = 15),
         axis.title = element_text(size = 15))
 ```
-![cb3b6fd0-6ec0-4a2d-8a3c-1966a51bfce2](https://github.com/Kaancici/yillara_gore_nba/assets/150475924/cad8c7f4-1eea-44ca-bc06-5273025d1ec1)
+![113cbe48-6743-4a82-9334-92a821b7a058](https://github.com/Kaancici/yillara_gore_nba/assets/150475924/bd26ea85-c5fe-42b1-ae81-89e26c9f90be)
+
+
 
  NBA'deki üç sayı trendi, ligin temel dinamiklerini kökten değiştiren önemli bir faktör olarak öne çıkmaktadır. Bu eğilim, hem hücum stratejilerini hem de savunma taktiklerini, oyuncu profillerini ve oyunun genel yapısını etkileyerek bir dizi önemli değişikliğe yol açmıştır.  Grafikten de açıkça görülebileceği gibi,   NBA'de üç sayı kullanımı son yıllarda hızla artış göstermiştir. 2011 yılında, toplam üç sayı atışlarının oranı %33,7 iken, bu oran 2022 yılında %41,1'e yükselmiştir. Bu istatistik, ligdeki takımların ve oyuncuların üçlük atışlarına daha fazla odaklandığını ve bu alanda daha etkili olduklarını göstermektedir. 
 Bu değişiklik, hem hücum hem de savunma stratejilerinde adapte olmayı gerektirmiş, takımların oyuncu kadrolarını ve oyun planlarını revize etmelerine neden olmuştur. Ayrıca, oyuncu profillerinde de belirgin bir değişiklik gözlemlenmiş, uzak mesafeden etkili şut atan oyuncuların talebi ve değeri artmıştır. 
