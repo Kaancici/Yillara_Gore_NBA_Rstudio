@@ -214,8 +214,9 @@ Sonuç olarak, NBA'deki üç sayı trendi, ligi daha hızlı, daha uzak mesafede
 
 ### 4)Yıllara göre oyuncuların ofensif performansları karşılaştırması violinchart
 ```
-data <- NBAson2
-mean_data <- data |>
+data <- NBAson2 %>%
+ filter(!is.na(OWS))  
+  mean_data <- data |>
   group_by(year) |>
   summarise(mean_OWS = mean(OWS))
 ggplot(data, aes(x = OWS, y = factor(year))) +  # Swap x and y axes
@@ -235,22 +236,24 @@ ggplot(data, aes(x = OWS, y = factor(year))) +  # Swap x and y axes
         axis.title = element_text(size = 15))
 ```
 
-![32084d01-4418-4244-bc6d-191980606b87](https://github.com/Kaancici/yillara_gore_nba/assets/150475924/87b87d03-0472-4d0b-8a1c-c881063a0deb)
+![Screenshot 2025-02-27 223955](https://github.com/user-attachments/assets/87af0d5f-758d-42ac-9611-268b0a8612ee)
 
-   Grafikten görülebileceği gibi, NBA'de oyuncuların ofansif performansları, yıllara göre ortalamaya yaklaşmıştır. Bu durum, oyuncuların ofansif yeteneklerinin arttığını göstermektedir.
+
+   Grafik, NBA’de yıllar içinde ofansif performansın daha standart hale geldiğini ve oyuncular arasındaki farkların azaldığını göstermektedir. 2011 yılında dağılım daha genişken ve bazı oyuncuların performansı ortalamadan çok daha yüksekteyken, 2022’ye gelindiğinde dağılımın daha sıkı olduğu ve uç değerlerin azaldığı gözlemlenmektedir. Özellikle 2015 ile 2019 yılları kıyaslandığında, 2015’te oyuncular arasında daha büyük farklar varken, 2019 itibarıyla çeyrekler arası farkın kapandığı ve performansların daha dengeli hale geldiği görülmektedir. Bu eğilim, ligin genel olarak daha stratejik ve dengeli bir oyun yapısına evrildiğini, bireysel üstün performanslardan çok takım oyununa dayalı bir sisteme doğru ilerlediğini düşündürmektedir.
 
 ### 5)Yıllara göre oyuncuların defansif performansları karşılaştırması violinchart
 ```
-data <- NBAson2
-mean_data <- data |>
+data <- NBAson2 %>%
+ filter(!is.na(DWS))  
+  mean_data <- data |>
   group_by(year) |>
-  summarise(mean_DWS = mean(DWS))
+  summarise(mean_OWS = mean(DWS))
 ggplot(data, aes(x = DWS, y = factor(year))) +  # Swap x and y axes
   geom_violin(trim = FALSE, fill = "#01408d") +
   geom_boxplot(width = 0.2, fill = "white", color = "black") +
-  geom_point(data = mean_data, aes(x = mean_DWS, y = factor(year)), color = "darkred", size = 3) +
-  labs(title = "Oyuncuların Yıllara Göre Defansif Performansı Karşılaştırması",
-       x = "Yıllara Göre Defansif Performansları",
+  geom_point(data = mean_data, aes(x = mean_OWS, y = factor(year)), color = "darkred", size = 3) +
+  labs(title = "Oyuncuların Yıllara Göre Ofansif Performansı Karşılaştırması",
+       x = "Yıllara Göre Ofansif Performansları",
        y = "Yıl") +
   theme(axis.title.x = element_text(size = 12),
         axis.title.y = element_text(size = 12),
@@ -261,6 +264,7 @@ ggplot(data, aes(x = DWS, y = factor(year))) +  # Swap x and y axes
   theme(axis.text = element_text(size = 15),
         axis.title = element_text(size = 15))
 ```
-![98fd6d84-398f-4699-a49b-b08a7334c608](https://github.com/Kaancici/yillara_gore_nba/assets/150475924/5e01c3af-3c32-4fdc-a69f-f0caa145e459)
+![Screenshot 2025-02-27 224040](https://github.com/user-attachments/assets/d130786c-f491-48b0-b11b-8d384ba00f81)
 
-  Grafikten görülebileceği gibi, NBA'de oyuncuların defansif performansları, yıllara göre ortalamaya yaklaşmıştır. Bu durum, oyuncuların defansif yeteneklerinin arttığını göstermektedir.
+
+  Grafik, NBA’de yıllar içinde defansif performansın daha dengeli hale geldiğini ve oyuncular arasındaki farkların azaldığını göstermektedir. 2011 yılında dağılım daha genişken ve bazı oyuncuların defansif katkısı ortalamadan belirgin şekilde yüksekken, 2022’ye gelindiğinde dağılımın daha sıkı olduğu ve uç değerlerin azaldığı gözlemlenmektedir. Özellikle 2015 ile 2019 yılları kıyaslandığında, 2015’te defansif performans açısından daha büyük farklılıklar görülürken, 2019 itibarıyla oyuncular arasındaki farkların daraldığı ve savunma katkısının daha istikrarlı hale geldiği fark edilmektedir. Bu eğilim, ligin genel olarak daha sistematik ve takım odaklı bir defans anlayışına geçtiğini, bireysel savunma başarısından çok takım savunmasının ön plana çıktığını düşündürmektedir.
