@@ -113,12 +113,22 @@ plot6 <- ggplot(NBAson2, aes(x = WS, y = PER)) +
 grid.arrange(plot1, plot2, plot3, plot4, plot5, plot6, ncol = 3)
 ```
 
-![2e1537f8-5728-448e-8cd4-ddd0bf12ad30](https://github.com/Kaancici/yillara_gore_nba/assets/150475924/93273d89-bff1-44ef-957c-789ba5be20ec)
+![Screenshot 2025-02-27 215620](https://github.com/user-attachments/assets/b6527847-44dd-4205-94e1-2617115559a9)
 
-Asist yüzdesi ile performans arasında pozitif bir ilişki gözlenmektedir, yüksek asist yüzdesine sahip oyuncular genellikle yüksek performans skorlarına sahiptir.
-Bloklama yüzdesi ile performans  arasında da benzer bir ilişki vardır; daha yüksek bloklama yüzdesine sahip oyuncular genellikle daha yüksek performans skorlarına sahiptir.
-Oyunda kalma süresi ile performans arasında bir eğilim gözlenmektedir; daha uzun süre sahada kalan oyuncular genellikle daha yüksek performans  skorlarına sahip olabilir, bu da oyuncuların performanslarını uzun süre sürdürebildiğini gösterir.  
-Kazanma yüzdesi ile performans arasında genel bir eğilim vardır; takımının daha yüksek bir kazanma yüzdesine sahip olduğu oyuncular genellikle daha yüksek performans skorlarına sahiptir, bu da oyuncuların takımlarının başarısına olumlu bir katkı sağladığını gösterir.
+Oynanan maç sayısı ile performans arasında belirgin bir doğrusal ilişki bulunmamaktadır. Ancak sezon boyunca 50’den fazla maç oynayan oyuncuların performanslarının daha stabil ve yüksek olduğu gözlemlenmiştir. Daha az maç oynayan oyuncuların performans değişkenliği daha fazladır; bazı oyuncular az maçta yüksek verim gösterebilirken, bazıları ise düşük PER değerlerine sahip olabilir. Sezon boyunca istikrarlı oynayan oyuncular, genellikle daha güvenilir ve stabil bir performans sergilemektedir.
+
+Gerçek atış yüzdesi (TS) ile performans arasında güçlü bir pozitif ilişki bulunmaktadır. Yüksek TS yüzdesine sahip oyuncuların PER değerleri genellikle daha yüksektir. TS %50-60 aralığında yoğunlaşan oyuncuların büyük bir kısmı PER 10-15 seviyelerinde bulunmaktadır. Buna karşılık TS %40’ın altında olan oyuncuların performansları genellikle düşük olup, bu da şut verimliliğinin bireysel performans üzerinde önemli bir etkisi olduğunu göstermektedir. Şut yüzdesi düşük olan oyuncuların PER değerleri genellikle düşük kalsa da, istisna olarak diğer alanlarda katkı sağlayan oyuncular da mevcuttur.
+
+Asist yüzdesi ile performans arasında güçlü bir pozitif korelasyon gözlemlenmektedir. 5-10 asist arasında olan oyuncuların yoğunlukla PER 10-15 aralığında olduğu görülmektedir. Daha fazla asist yapan oyuncular genellikle takımın oyununu yönlendiren ve hücumda etkin olan oyuncular olduklarından, PER değerleri de yükselmektedir. Ancak skorer veya savunma odaklı olup düşük asist sayısına rağmen yüksek PER elde eden oyuncular da bulunmaktadır.
+
+Blok oranı arttıkça PER değerleri de artış göstermektedir. Blok yüzdesi 0-1 arasında olan oyuncuların büyük çoğunluğu PER 10-15 aralığında yoğunlaşmışken, 2-4 blok ortalaması olan oyuncuların daha yüksek PER değerlerine sahip olduğu görülmektedir. Savunmada etkili olan ve boyalı alanda caydırıcılığı yüksek olan oyuncuların PER değerleri de genellikle yükselmektedir. Ancak, blok yapmayan oyuncuların da yüksek PER elde edebileceği unutulmamalıdır; bu oyuncular genellikle hücum katkılarıyla ön plana çıkmaktadır.
+
+Oyunda kalma süresi ile performans arasında genel bir eğilim bulunmaktadır, ancak bu ilişki tamamen doğrusal değildir. Daha uzun süre sahada kalan oyuncuların genellikle daha yüksek PER değerlerine sahip olduğu gözlemlenmiştir. Yoğunluk merkezi 1000-2000 dakika arasında olup PER 10-15 seviyelerinde yoğunlaşmaktadır. Ancak, bazı oyuncular düşük süre almasına rağmen çok yüksek PER değerlerine ulaşabilmektedir. Bu durum, yedekten girip kısa sürede verimli oynayan oyuncuların varlığını göstermektedir.
+
+Takımın kazanma yüzdesi ile bireysel performans arasında pozitif bir ilişki bulunmaktadır. WS değeri 2’nin üzerinde olan oyuncuların PER değerleri genellikle yüksek olup, kazanan takımlarda oynayan oyuncuların bireysel performansları da daha iyi olma eğilimindedir. Ancak, bireysel performansı yüksek olmasına rağmen kötü bir takımda oynayan oyuncular da mevcuttur. Bu nedenle, takım başarısı ve bireysel başarı her zaman paralel ilerlememektedir.
+
+#### Genel Yorum
+Genel olarak, asist yüzdesi, blok yüzdesi ve kazanma yüzdesi performans (PER) üzerinde en güçlü etkilere sahip metrikler olarak öne çıkmaktadır. Şut verimliliği (TS), bireysel performansı belirlemede önemli bir faktördür, çünkü daha verimli şut atan oyuncular genellikle daha yüksek PER değerlerine ulaşmaktadır. Daha uzun süre sahada kalan oyuncuların performansları genellikle daha yüksek olmasına rağmen, bu durum her zaman geçerli değildir. Özellikle yedekten girip yüksek verimle oynayan oyuncular düşük sürede bile yüksek PER elde edebilmektedir. Takım başarısı ile bireysel performans arasında pozitif bir korelasyon olsa da, bireysel olarak çok iyi performans gösteren ancak kötü bir takımda oynayan oyuncuların PER değerleri kazanma yüzdesinden bağımsız olarak yüksek olabilir. Sonuç olarak, bir oyuncunun performansını değerlendirirken tek bir istatistiğe odaklanmak yerine, şut verimliliği, asist, blok, süre ve takım başarısını birlikte değerlendirmek en doğru yaklaşımdır.
 
 
 ### 2)Pozisyonlara göre yıllık atış yüzdeleri karşılatırılması, Streamgraph
