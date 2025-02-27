@@ -53,62 +53,68 @@ library(shiny)
 ### 1) Performans hangi istatistiklerle ilişkilidir, scatterplot 
 ```
 
- plot1 <- ggplot(NBAson2, aes(x = G, y = PER)) +
-  geom_point(size = 2, color = '#01408d', alpha = 0.5) +
-  labs(title = 'Maç Sayısı ve Performans ',
-       x = 'Oynanan Maç Sayısı',
+colnames(NBAson2) <- gsub("%", "", colnames(NBAson2))
+colnames(NBAson2)
+
+remove_outliers <- function(data, column) {
+  Q1 <- quantile(data[[column]], 0.25, na.rm = TRUE)
+  Q3 <- quantile(data[[column]], 0.75, na.rm = TRUE)
+  IQR_value <- Q3 - Q1
+  lower_bound <- Q1 - 1.5 * IQR_value
+  upper_bound <- Q3 + 1.5 * IQR_value
+  return(data[data[[column]] >= lower_bound & data[[column]] <= upper_bound, ])
+}
+
+NBAson2 <- remove_outliers(NBAson2, "PER")  
+NBAson2 <- remove_outliers(NBAson2, "TS")   
+NBAson2 <- remove_outliers(NBAson2, "AST")  
+NBAson2 <- remove_outliers(NBAson2, "BLK")
+NBAson2 <- remove_outliers(NBAson2, "MP")  
+NBAson2 <- remove_outliers(NBAson2, "WS")
+NBAson2 <- remove_outliers(NBAson2, "OWS")
+NBAson2 <- remove_outliers(NBAson2, "DWS")
+
+plot1 <- ggplot(NBAson2, aes(x = G, y = PER)) +
+  geom_density2d_filled() +  # Yoğunluk haritası
+  labs(title = 'Oynanan Maç ve Performans',
+       x = 'Oynanan Maç',
        y = 'Performans') +
-  theme_bw()+
-  theme(axis.text = element_text(size = 15),
-        axis.title = element_text(size = 15))
+  theme_bw()
 
 plot2 <- ggplot(NBAson2, aes(x = TS, y = PER)) +
-  geom_point(size = 2, color = '#e9062a', alpha = 0.5) +
-  labs(title = 'Gerçek Atış (%) ve Performans',
-       x = 'Gerçek Atış (%)',
+  geom_density2d_filled() +
+  labs(title = 'Gerçek Atış ve Performans',
+       x = 'Gerçek Atış',
        y = 'Performans') +
-  theme_bw()+
-  theme(axis.text = element_text(size = 15),
-        axis.title = element_text(size = 15))
+  theme_bw()
 
 plot3 <- ggplot(NBAson2, aes(x = AST, y = PER)) +
-  geom_point(size = 2, color = '#01408d', alpha = 0.5) +
-  labs(title = 'Asist (%) ve Performans',
-       x = 'Asist (%)',
+  geom_density2d_filled() +
+  labs(title = 'Asist ve Performans',
+       x = 'Asist',
        y = 'Performans') +
-  theme_bw()+
-  theme(axis.text = element_text(size = 15),
-        axis.title = element_text(size = 15))
-
+  theme_bw()
 
 plot4 <- ggplot(NBAson2, aes(x = BLK, y = PER)) +
-  geom_point(size = 2, color = '#e9062a', alpha = 0.5) +
-  labs(title = 'Bloklama (%) ve Performans',
-       x = 'Bloklama (%)',
+  geom_density2d_filled() +
+  labs(title = 'Bloklama ve Performans',
+       x = 'Bloklama',
        y = 'Performans') +
-  theme_bw()+
-  theme(axis.text = element_text(size = 15),
-        axis.title = element_text(size = 15))
-
+  theme_bw()
 
 plot5 <- ggplot(NBAson2, aes(x = MP, y = PER)) +
-  geom_point(size = 2, color = '#01408d', alpha = 0.5) +
-  labs(title = 'Oyunda Kalma Süresi ve Performans ',
+  geom_density2d_filled() +
+  labs(title = 'Oyunda Kalma Süresi ve Performans',
        x = 'Oyunda Kalma Süresi',
        y = 'Performans') +
-  theme_bw()+
-  theme(axis.text = element_text(size = 15),
-        axis.title = element_text(size = 15))
-
+  theme_bw()
 
 plot6 <- ggplot(NBAson2, aes(x = WS, y = PER)) +
-  geom_point(size = 2, color = '#e9062a', alpha = 0.5) +
-  labs(title = 'Kazanma (%) ve Performans ',
-       x = 'Kazanma (%)',
+  geom_density2d_filled() +
+  labs(title = 'Kazanma ve Performans',
+       x = 'Kazanma',
        y = 'Performans') +
-  theme_bw()+
-  theme(axis.text = element_text(size = 15),
-        axis.title = element_text(size = 15))
+  theme_bw()
 
 grid.arrange(plot1, plot2, plot3, plot4, plot5, plot6, ncol = 3)
 ```
